@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except(['register', 'login']);
+    }
+
     public function register(RegisterRequest $request)
     {
         User::create($request->validated());
@@ -78,6 +83,7 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
+            'data' => auth()->user()
         ]);
     }
 }
