@@ -19,7 +19,7 @@ class BrandController extends Controller
             return response()->json(["message" => 'No data']);
         }
 
-        return response()->json(['data' => $brands]);
+        return response()->json($brands);
     }
 
     public function show(Brand $brand): JsonResponse

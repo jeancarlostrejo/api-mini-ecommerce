@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,5 +30,8 @@ Route::group(['middleware' => 'api'], function () {
 
     //Crud brand
     Route::apiResource('brands', BrandController::class)->middleware('auth:api');
+
+    //Crud categories
+    Route::apiResource('categories', CategoryController::class)->middleware('auth:api');
 });
 
