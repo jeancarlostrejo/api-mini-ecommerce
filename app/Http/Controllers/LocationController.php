@@ -31,6 +31,8 @@ class LocationController extends Controller
 
     public function update(StoreLocationRequest $request, Location $location): JsonResponse
     {
+        $this->authorize('update', $location);
+
         $location->update($request->validated());
 
         return response()->json(['message' => 'Location updated successfully']);
@@ -38,6 +40,8 @@ class LocationController extends Controller
 
     public function destroy(Location $location): Response
     {
+        $this->authorize('delete', $location);
+
         $location->delete();
 
         return response()->noContent();
