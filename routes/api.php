@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,5 +45,10 @@ Route::group(['middleware' => 'api'], function () {
 
     //Crud products
     Route::apiResource('products', ProductController::class)->middleware('auth:api');
+
+    //Orders
+    Route::post('/orders', [OrderController::class, 'store'])->middleware('auth:api');
+    Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:api');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('auth:api');
 });
 
