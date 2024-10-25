@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,5 +41,8 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('/locations', [LocationController::class, 'store'])->middleware('auth:api');
     Route::put('/locations/{location}', [LocationController::class, 'update'])->middleware('auth:api');
     Route::delete('/locations/{location}', [LocationController::class, 'destroy'])->middleware('auth:api');
+
+    //Crud products
+    Route::apiResource('products', ProductController::class)->middleware('auth:api');
 });
 
