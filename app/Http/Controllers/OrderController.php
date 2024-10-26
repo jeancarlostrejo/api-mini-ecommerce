@@ -18,7 +18,7 @@ class OrderController extends Controller
      */
     public function index(): JsonResponse
     {
-        $orders = Order::with(['user:id,name,email', 'location', 'products'])->paginate(20);
+        $orders = Order::with(['user:id,name,email', 'location'])->paginate(20);
 
         if ($orders->isEmpty()) {
             return response()->json(['message' => 'No orders found', "data" => []], 200);
