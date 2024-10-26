@@ -32,10 +32,10 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('/me', [AuthController::class, 'me']);
 
     //Crud brand
-    Route::apiResource('brands', BrandController::class)->middleware('auth:api');
+    Route::apiResource('brands', BrandController::class)->middleware(['auth:api', 'is_admin']);
 
     //Crud categories
-    Route::apiResource('categories', CategoryController::class)->middleware('auth:api');
+    Route::apiResource('categories', CategoryController::class)->middleware(['auth:api', 'is_admin']);
 
     //Crud locations
     Route::get('/locations', [LocationController::class, 'index'])->middleware('auth:api');
@@ -47,11 +47,11 @@ Route::group(['middleware' => 'api'], function () {
     Route::apiResource('products', ProductController::class)->middleware('auth:api');
 
     //Orders
-    Route::post('/orders', [OrderController::class, 'store'])->middleware('auth:api');
-    Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:api');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('auth:api');
-    Route::get('/orders/users/{user}', [OrderController::class, 'ordersOfUser']);
-    Route::get('/orders/{order}/products',[OrderController::class, 'productsOfOrder']);
-    Route::post('/orders/{order}/status',[OrderController::class, 'changeStatusOrder']);
+    Route::post('/orders', [OrderController::class, 'store'])->middleware(['auth:api', 'is_admin']);
+    Route::get('/orders', [OrderController::class, 'index'])->middleware(['auth:api', 'is_admin']);
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware(['auth:api', 'is_admin']);
+    Route::get('/orders/users/{user}', [OrderController::class, 'ordersOfUser'])->middleware(['auth:api', 'is_admin']);
+    Route::get('/orders/{order}/products',[OrderController::class, 'productsOfOrder'])->middleware(['auth:api', 'is_admin']);
+    Route::post('/orders/{order}/status',[OrderController::class, 'changeStatusOrder'])->middleware(['auth:api', 'is_admin']);
 });
 
