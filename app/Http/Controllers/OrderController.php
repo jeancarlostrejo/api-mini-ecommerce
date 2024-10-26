@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateStatusOrderRequest;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\Product;
@@ -92,5 +93,12 @@ class OrderController extends Controller
         }])['products'];
         
         return response()->json(["data" => $productsOfOrder]);
+    }
+
+    public function changeStatusOrder(Order $order, UpdateStatusOrderRequest $request)
+    {
+        $order->update($request->validated());
+
+        return response()->json(["message" => "Order status updated successfully"]);
     }
 }
