@@ -50,5 +50,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('/orders', [OrderController::class, 'store'])->middleware('auth:api');
     Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:api');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('auth:api');
+    Route::get('/orders/users/{user}', [OrderController::class, 'ordersOfUser']);
+    Route::get('/orders/{order}/products',[OrderController::class, 'productsOfOrder']);
 });
 

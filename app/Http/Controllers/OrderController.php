@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -66,9 +67,30 @@ class OrderController extends Controller
     {
         $order->load(['user:id,name,email', 'location:id,street,building,area', 'products' => function ($query) {
             $query->select('products.id', 'products.name', 'categories.name as category', 'products.category_id', 'order_product.price as price', 'order_product.quantity as quantity');
-            $query->join('categories', 'products.category_id', '=', 'categories.id');;
+            $query->join('categories', 'products.category_id', '=', 'categories.id');
         }]);
 
         return response()->json($order);
+    }
+
+    public function ordersOfUser(User $user)
+    {
+        $orderOfUser = $user->orders()->paginate(20);
+
+        if($user->orders->isEmpty()) {
+            return response()->json(['message' => 'No orders found', "data" => []], 200);
+        }
+
+        return response()->json($orderOfUser);
+    }
+
+    public function productsOfOrder(Order $order)
+    {
+        $productsOfOrder = $order->load(['products' => function ($query) {
+            $query->select('products.id', 'products.name', 'categories.name as category', 'products.category_id', 'order_product.price as price', 'order_product.quantity as quantity');
+            $query->join('categories', 'products.category_id', '=', 'categories.id');
+        }])['products'];
+        
+        return response()->json(["data" => $productsOfOrder]);
     }
 }
