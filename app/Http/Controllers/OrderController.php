@@ -76,7 +76,7 @@ class OrderController extends Controller
 
     public function ordersOfUser(User $user)
     {
-        $orderOfUser = $user->orders()->paginate(20);
+        $orderOfUser = $user->orders()->latest()->paginate(20);
 
         if($user->orders->isEmpty()) {
             return response()->json(['message' => 'No orders found', "data" => []], 200);
