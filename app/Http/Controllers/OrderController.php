@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateStatusOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\Product;
@@ -64,14 +65,9 @@ class OrderController extends Controller
      /**
      * Display the specified resource.
      */
-    public function show(Order $order): JsonResponse
+    public function show(Order $order)
     {
-        $order->load(['user:id,name,email', 'location:id,street,building,area', 'products' => function ($query) {
-            $query->select('products.id', 'products.name', 'categories.name as category', 'products.category_id', 'order_product.price as price', 'order_product.quantity as quantity');
-            $query->join('categories', 'products.category_id', '=', 'categories.id');
-        }]);
-
-        return response()->json($order);
+        return new OrderResource($order->load(['user', 'location', 'products.category', 'products.brand']));
     }
 
     public function ordersOfUser(User $user)
@@ -82,7 +78,7 @@ class OrderController extends Controller
             return response()->json(['message' => 'No orders found', "data" => []], 200);
         }
 
-        return response()->json($orderOfUser);
+        return OrderResource::collection($orderOfUser);
     }
 
     public function productsOfOrder(Order $order)

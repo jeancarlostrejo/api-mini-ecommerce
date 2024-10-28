@@ -23,9 +23,9 @@ class Product extends Model
         'is_available',
     ];
 
-    protected $hidden = [
-        'pivot'
-    ];
+    // protected $hidden = [
+    //     'pivot'
+    // ];
 
     public function category(): BelongsTo
     {
